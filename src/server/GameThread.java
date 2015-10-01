@@ -51,10 +51,10 @@ public class GameThread implements Runnable {
                     if (whiteStep != null) {
                         System.out.println("White's step");
                         nextStep(whiteStep);
-                        if(i==10) currentField=null; //for debug
+                        if(i>=10) currentField=null; //for debug
                         if(currentField!=null) {
+                            i++; //for debug
                             outObjectBlack.writeObject(currentField);
-                            isWhitesTurn = !isWhitesTurn;
                         }else{
                             break;
                         }
@@ -65,14 +65,13 @@ public class GameThread implements Runnable {
                         System.out.println("Black's step");
                         nextStep(blackStep);
                         if(currentField!=null) {
-                            outObjectBlack.writeObject(currentField);
-                            isWhitesTurn = !isWhitesTurn;
+                            i++; //for debug
+                            outObjWhite.writeObject(currentField);
                         }else{
                             break;
                         }
                     }
                 }
-                i++; //for debug
             }
             closeAll();
         }
@@ -105,7 +104,7 @@ public class GameThread implements Runnable {
     private boolean isUserWin(Field currentField){return false;}
 
     private void fillField(){
-        this.currentField=new Field();
+        this.currentField = new Field();
     }
 
     private void closeAll(){

@@ -1,7 +1,7 @@
 package vo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Isaiev on 24.09.2015.
@@ -11,9 +11,9 @@ public class Step implements Serializable{
     ANY-ACCESS-MODIFIER static final long serialVersionUID = 42L;
 
     private Check check;
-    private List<Position> positionAfteMove;
+    private ArrayList<Position> positionAfteMove;
 
-    public Step(Check check, List<Position> positionAfteMove) {
+    public Step(Check check, ArrayList<Position> positionAfteMove) {
         this.check = check;
         this.positionAfteMove = positionAfteMove;
     }
@@ -24,7 +24,7 @@ public class Step implements Serializable{
         return check;
     }
 
-    public List<Position> getPositionAfteMove() {
+    public ArrayList<Position> getPositionAfteMove() {
         return positionAfteMove;
     }
 

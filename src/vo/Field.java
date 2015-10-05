@@ -7,6 +7,8 @@ import java.util.List;
  * Created by Isaiev on 24.09.2015.
  */
 public class Field implements Serializable {
+    
+    ANY-ACCESS-MODIFIER static final long serialVersionUID = 42L;
 
     private ArrayList<Check> allChecks;
 

@@ -7,6 +7,7 @@ import java.util.List;
  * Created by Isaiev on 24.09.2015.
  */
 public class Step implements Serializable{
+    
 
     private Check check;
     private List<Position> positionAfteMove;

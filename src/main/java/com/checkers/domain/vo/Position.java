@@ -1,4 +1,4 @@
-package vo;
+package com.checkers.domain.vo;
 
 /**
  * Created by Isaiev on 24.09.2015.

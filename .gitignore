@@ -1,3 +1,16 @@
+classes/
+target/
+Blah/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -10,6 +23,6 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-*.name
-.idea/compiler.xml
-*.xml
+src/main/resources/rebel.xml
+out/
+target/

@@ -1,7 +1,7 @@
-package vo;
+package com.checkers.domain.vo;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Isaiev on 24.09.2015.

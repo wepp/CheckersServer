@@ -1,4 +1,4 @@
-package vo;
+package com.checkers.domain.vo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

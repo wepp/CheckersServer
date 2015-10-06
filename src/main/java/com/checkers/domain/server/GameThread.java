@@ -1,7 +1,7 @@
-package server;
+package com.checkers.domain.server;
 
-import vo.Field;
-import vo.Step;
+import com.checkers.domain.vo.Field;
+import com.checkers.domain.vo.Step;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,7 +28,6 @@ public class GameThread implements Runnable {
         this.black = black;
         fillField();
         isWhitesTurn = true;
-
         try {
             this.outObjWhite = new ObjectOutputStream(white.getOutputStream());
             this.inObjectWhite = new ObjectInputStream(white.getInputStream());
@@ -95,6 +94,10 @@ public class GameThread implements Runnable {
             System.err.println("Not valid step from "+ player+"! Looser!");
             currentField = null;
         }
+    }
+
+    public Socket winner(){
+        return white;
     }
 
     private boolean isValidStep(Step nextStep){return true;}

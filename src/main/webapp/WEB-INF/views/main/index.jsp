@@ -11,7 +11,8 @@
 <body>
 
 <div>
-
+    This is main page of checkers server. Click here for watch playign games;
+    <a href="server">Games page</a>
 </div>
 
 </body>

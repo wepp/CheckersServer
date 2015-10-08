@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Step implements Serializable{
     
-    ANY-ACCESS-MODIFIER static final long serialVersionUID = 42L;
+    public static final long serialVersionUID = 42L;
 
     private Check check;
     private ArrayList<Position> positionAfteMove;

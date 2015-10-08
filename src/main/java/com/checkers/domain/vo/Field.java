@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Field implements Serializable {
     
-    ANY-ACCESS-MODIFIER static final long serialVersionUID = 42L;
+    public static final long serialVersionUID = 42L;
 
     private ArrayList<Check> allChecks;
 

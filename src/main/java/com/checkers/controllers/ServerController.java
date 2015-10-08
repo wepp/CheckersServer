@@ -30,10 +30,17 @@ public class ServerController {
         return "main/server";
     }
 
+    @RequestMapping(value = "/amount", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    int amount() {
+        return serverService.getGamesAmount();
+    }
+
     @RequestMapping(value = "/games", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<GameThread> categories() {
+    List<GameThread> games() {
         return serverService.getGames();
     }
 }

@@ -17,28 +17,38 @@
                 function () {
                     var html = '<table>';
                     html += '<tr><td>Game number</td><td>Result</td></tr>';
-                    var i=0;
-                    $.getJSON('${games}', {
+                    var i = 0;
+                    $.getJSON('/games', {
                         ajax: 'true'
                     }, function (data) {
                         var len = data.length;
                         for (var i = 0; i < len; i++) {
                             var gameResult = '';
-                            if(data[i].winner() != null){
-                                console.log('has winner');
-                            }else console.log('stil playing');
+//                            if (data[i].winner() != null) {
+//                                console.log('has winner');
+//                            } else console.log('stil playing');
+                            console.log(data);
                             html += '<tr><td>' + i + '</td><td>' + gameResult + '</td></tr>';
                         }
                     });
                     html += '</table>';
                     $('#games').html(html);
+
+                    $.getJSON('/amount', {
+                        ajax: 'true'
+                    }, function (data) {
+                        $('#gamesAmount').html(data);
+                    });
+
                 }
         );
     </script>
 </head>
 <body>
 Games amount:
-<h3>${gamesAmount}</h3>
+<div id="gamesAmount">
+
+</div>
 <div id="games">
 
 </div>

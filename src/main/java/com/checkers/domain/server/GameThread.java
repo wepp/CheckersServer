@@ -11,7 +11,7 @@ import java.net.Socket;
 /**
  * Created by Isaiev on 01.10.2015.
  */
-public class GameThread extends Thread {
+public class GameThread implements Runnable{
 
     private Field currentField;
     private boolean isWhitesTurn;
@@ -36,10 +36,12 @@ public class GameThread extends Thread {
         } catch (IOException e) {
             System.err.println("Server error! " + e);
         }
+        System.out.println("Game registred");
     }
 
     @Override
     public void run() {
+        System.out.println("Game started");
         try{
             int i = 0; //for debug
             outObjWhite.writeObject(new Field());
@@ -75,6 +77,7 @@ public class GameThread extends Thread {
             closeAll();
         }
         catch(Exception e){
+            e.printStackTrace();
             throw new RuntimeException();
         } finally {
             closeAll();
@@ -145,7 +148,7 @@ public class GameThread extends Thread {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("GameThread{");
+        StringBuilder sb = new StringBuilder("GameThread{");
         sb.append("black=").append(black);
         sb.append(", white=").append(white);
         sb.append('}');

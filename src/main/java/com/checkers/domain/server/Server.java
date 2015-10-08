@@ -38,8 +38,7 @@ public class Server {
     public void startServer() {
         try {
             while (true) {
-                createNewBoard(recieverSocket.accept(), recieverSocket.accept());
-                checkPlayedGames();
+                createNewBoard();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,21 +49,21 @@ public class Server {
         return games;
     }
 
-    public void createNewBoard(Socket whitePlayer, Socket blackPlayer) {
-        GameThread newGame = new GameThread(whitePlayer, blackPlayer);
-        games.add(newGame);
-        newGame.start();
-    }
-
-    private void checkPlayedGames(){
-        for(GameThread game: games){
-            if(game.winner() != null){
-                game.stop();
-                game.destroy();
-                games.remove(game);
-                System.out.println("Game finished: "+game);
-            }
+    public void createNewBoard() throws IOException {
+        Socket white = null;
+        Socket black = null;
+        while(white == null) {
+            white = recieverSocket.accept();
+            System.out.println("white connected");
         }
+        while(black == null) {
+            black = recieverSocket.accept();
+            System.out.println("black connected");
+        }
+        System.out.println("New game");
+        GameThread game = new GameThread(white, black);
+        games.add(game);
+        new Thread(game).start();
     }
 
     public int getGamesAmount(){

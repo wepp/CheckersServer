@@ -11,28 +11,29 @@ public class Step implements Serializable{
     public static final long serialVersionUID = 43L;
 
     private Check check;
-    private ArrayList<Position> positionAfteMove;
+    private ArrayList<Position> positionAfterMove;
 
-    public Step(Check check, ArrayList<Position> positionAfteMove) {
+    public Step(Check check, ArrayList<Position> positionAfterMove) {
         this.check = check;
-        this.positionAfteMove = positionAfteMove;
+        this.positionAfterMove = positionAfterMove;
     }
     
     public Step(){};
+
+    public ArrayList<Position> getPositionAfterMove() {
+        return positionAfterMove;
+    }
 
     public Check getCheck() {
         return check;
     }
 
-    public ArrayList<Position> getPositionAfteMove() {
-        return positionAfteMove;
-    }
-
     @Override
     public String toString() {
-        return "Step{" +
-                "check=" + check +
-                ", positionAfteMove=" + positionAfteMove +
-                '}';
+        final StringBuilder sb = new StringBuilder("Step{");
+        sb.append("check=").append(check);
+        sb.append(", positionAfterMove=").append(positionAfterMove);
+        sb.append('}');
+        return sb.toString();
     }
 }

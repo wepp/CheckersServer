@@ -1,17 +1,31 @@
 package com.checkers.domain.server;
 
+import com.checkers.domain.vo.Check;
 import com.checkers.domain.vo.Field;
+import com.checkers.domain.vo.Position;
 import com.checkers.domain.vo.Step;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by Isaiev on 01.10.2015.
  */
-public class GameThread implements Runnable{
+public class GameThread implements Runnable {
+
+    /**
+     * MIN_SIZE is number of field before minimum
+     * EXAMPLE: our min is 1 so MIN i s0
+     */
+    private static final int MIN_SIZE = 0;
+    /**
+     * The same as MIN so our max is 8
+     * there is value 9
+     */
+    private static final int MAX_SIZE = 9;
 
     private Field currentField;
     private boolean isWhitesTurn;
@@ -42,7 +56,7 @@ public class GameThread implements Runnable{
     @Override
     public void run() {
         System.out.println("Game started");
-        try{
+        try {
             int i = 0; //for debug
             outObjWhite.writeObject(new Field());
             System.out.println("First field was sent");
@@ -52,31 +66,30 @@ public class GameThread implements Runnable{
                     if (whiteStep != null) {
                         System.out.println("White's step");
                         nextStep(whiteStep);
-                        if(i>=10) currentField=null; //for debug
-                        if(currentField!=null) {
+                        if (i >= 10) currentField = null; //for debug
+                        if (currentField != null) {
                             i++; //for debug
                             outObjectBlack.writeObject(currentField);
-                        }else{
+                        } else {
                             break;
                         }
                     }
-                }else {
+                } else {
                     Step blackStep = (Step) inObjectBlack.readObject();
                     if (blackStep != null) {
                         System.out.println("Black's step");
                         nextStep(blackStep);
-                        if(currentField!=null) {
+                        if (currentField != null) {
                             i++; //for debug
                             outObjWhite.writeObject(currentField);
-                        }else{
+                        } else {
                             break;
                         }
                     }
                 }
             }
             closeAll();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
         } finally {
@@ -85,35 +98,113 @@ public class GameThread implements Runnable{
     }
 
     private void nextStep(Step nextStep) {
-        String player = isWhitesTurn ? "White":"Black";
-        if(isValidStep(nextStep)) {
+        String player = isWhitesTurn ? "White" : "Black";
+        if (isValidStep(nextStep)) {
             currentField = calculateNextField(nextStep);
-            if(isUserWin(currentField)) {
+            if (isUserWin(currentField)) {
                 System.out.println(player + " player won!");
                 currentField = null;
-            }
-            else isWhitesTurn = !isWhitesTurn;
-        }else{
-            System.err.println("Not valid step from "+ player+"! Looser!");
+            } else isWhitesTurn = !isWhitesTurn;
+        } else {
+            System.err.println("Not valid step from " + player + "! Looser!");
             currentField = null;
         }
     }
 
-    public Socket winner(){
+    public Socket winner() {
+        //TODO Artem or Eugen
         return white;
     }
 
-    private boolean isValidStep(Step nextStep){return true;}
+    private boolean isValidStep(Step nextStep) {
+        ArrayList<Position> possibleSteps = nextStep.getPositionAfterMove();
+        /**
+         * IF HAS NO MORE STEPS THAN
+         * NO VALID STEPS
+         */
+        if (possibleSteps.size() == 0)
+            return false;
+        if (possibleSteps.size() == 1)
+            return checkOptimalStep(nextStep);
+        return true;
+    }
 
-    private Field calculateNextField(Step nextStep){return new Field();}
+    private boolean checkOptimalStep(Step nextStep) {
+        Check currentCheck = nextStep.getCheck();
+        Position currentPosition = currentCheck.getPosition();
+        int curX = currentPosition.getX();
+        int curY = currentPosition.getY();
+        Position nextPosition = nextStep.getPositionAfterMove().get(0);
+        int nextX = nextPosition.getX();
+        int nextY = nextPosition.getY();
 
-    private boolean isUserWin(Field currentField){return false;}
+        for (Check check : currentField.getAllChecks())
+            if (check.getPosition().getX() == nextX && check.getPosition().getY() == nextY)
+                return false;
 
-    private void fillField(){
+        /**
+         * SIMPLE STEP
+         */
+        if (isSimpleXStepOnBoard(currentCheck, curX, nextX)) {
+            /**
+             * IF OTHER CKECK IS ON THIS FIELD
+             */
+            return ((nextY == curY - 1 && nextY > MIN_SIZE) || (nextY == curY + 1 && nextY < MAX_SIZE));
+        } else if (isSimpleXAttackOnBoard(currentCheck, curX, nextX)) {
+            if (currentCheck.isWhite()) {
+                if (nextY == curY - 2) {
+                    for (Check check : currentField.getAllChecks())
+                        if (check.getPosition().getX() == curX - 1 && check.getPosition().getY() == curY - 1)
+                            return true;
+                } else if (nextY == curY + 2) {
+                    for (Check check : currentField.getAllChecks())
+                        if (check.getPosition().getX() == curX - 1 && check.getPosition().getY() == curY + 1)
+                            return true;
+                }
+            } else if (!currentCheck.isWhite()) {
+                if (nextY == curY - 2) {
+                    for (Check check : currentField.getAllChecks())
+                        if (check.getPosition().getX() == curX + 1 && check.getPosition().getY() == curY - 1)
+                            return true;
+                } else if (nextY == curY + 2) {
+                    for (Check check : currentField.getAllChecks())
+                        if (check.getPosition().getX() == curX + 1 && check.getPosition().getY() == curY + 1)
+                            return true;
+                }
+            }
+//                for (Check check : currentField.getAllChecks())
+//                    if (check.getPosition().getX() == nextX && check.getPosition().getY() == nextY)
+//                        return false;
+//                return true;
+        }
+        return false;
+    }
+
+    private boolean isSimpleXStepOnBoard(Check currentCheck, int curX, int nextX) {
+        return currentCheck.isWhite() && (curX - 1) == nextX && nextX > MIN_SIZE   // CHECK FOR WHITE CHECK STEP
+                ||
+                !currentCheck.isWhite() && (curX + 1) == nextX && nextX < MAX_SIZE;   // CHECK FOR BLACK CHECK STEP
+    }
+
+    private boolean isSimpleXAttackOnBoard(Check currentCheck, int curX, int nextX) {
+        return currentCheck.isWhite() && (curX - 2) == nextX && nextX > MIN_SIZE   // CHECK FOR WHITE CHECK ATTACK
+                ||
+                !currentCheck.isWhite() && (curX + 2) == nextX && nextX < MAX_SIZE;   // CHECK FOR BLACK CHECK ATTACK
+    }
+
+    private Field calculateNextField(Step nextStep) {
+        return new Field();
+    }
+
+    private boolean isUserWin(Field currentField) {
+        return false;
+    }
+
+    private void fillField() {
         this.currentField = new Field();
     }
 
-    private void closeAll(){
+    private void closeAll() {
         try {
             inObjectWhite.close();
             outObjWhite.close();

@@ -58,6 +58,8 @@ public class GameThread implements Runnable {
         System.out.println("Game started");
         try {
             int i = 0; //for debug
+            outObjWhite.writeObject("white");
+            outObjectBlack.writeObject("black");
             outObjWhite.writeObject(new Field());
             System.out.println("First field was sent");
             while (true) {
@@ -65,7 +67,7 @@ public class GameThread implements Runnable {
                     Step whiteStep = (Step) inObjectWhite.readObject();
                     if (whiteStep != null) {
                         System.out.println("White's step");
-                        nextStep(whiteStep);
+                        //nextStep(whiteStep);
                         if (i >= 10) currentField = null; //for debug
                         if (currentField != null) {
                             i++; //for debug
@@ -78,7 +80,7 @@ public class GameThread implements Runnable {
                     Step blackStep = (Step) inObjectBlack.readObject();
                     if (blackStep != null) {
                         System.out.println("Black's step");
-                        nextStep(blackStep);
+                        //nextStep(blackStep);
                         if (currentField != null) {
                             i++; //for debug
                             outObjWhite.writeObject(currentField);
@@ -112,7 +114,7 @@ public class GameThread implements Runnable {
     }
 
     public Socket winner() {
-        //TODO Artem or Eugen
+        //TODO Eugen
         return white;
     }
 

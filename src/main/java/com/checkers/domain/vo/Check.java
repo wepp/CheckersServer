@@ -9,7 +9,7 @@ public class Check {
     private Position position;
     private boolean isWhite;
 
-    protected Check(Position position, boolean isWhite) {
+    public Check(Position position, boolean isWhite) {
         this.position = position;
         this.isWhite = isWhite;
     }

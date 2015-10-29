@@ -202,6 +202,30 @@ public class GameThread implements Runnable {
 
     private void fillField() {
         this.currentField = new Field();
+        ArrayList<Check> checks = new ArrayList<Check>();
+        for(int i=1;i<=8;i++){
+            for(int j=1;j<=8;j++){
+                if(i%2==1){
+                    if(j%2==0){
+                        Check check = null;
+                        Position pos = new Position(i,j);
+                        if(i<=3) check = new Check(pos,true);
+                        if(i>=6) check = new Check(pos,false);
+                        if(check!=null) checks.add(check);
+
+                    }
+                } else {
+                    if(j%2==1){
+                        Check check = null;
+                        Position pos = new Position(i,j);
+                        if(i<=3) check = new Check(pos,true);
+                        if(i>=6) check = new Check(pos,false);
+                        if(check!=null) checks.add(check);
+                    }
+                }
+            }
+        }
+        this.currentField.setAllChecks(checks);
     }
 
     private void closeAll() {

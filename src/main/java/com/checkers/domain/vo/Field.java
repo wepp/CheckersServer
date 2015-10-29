@@ -20,7 +20,7 @@ public class Field implements Serializable {
         return allChecks;
     }
 
-    protected void setAllChecks(ArrayList<Check> allChecks) {
+    public void setAllChecks(ArrayList<Check> allChecks) {
         this.allChecks = allChecks;
     }
 }

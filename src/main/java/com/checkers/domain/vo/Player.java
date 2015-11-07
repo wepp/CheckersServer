@@ -13,7 +13,7 @@ public class Player {
         this.whiteStreams = whiteStreams;
     }
 
-    public void writeObject(Field currentField) throws IOException {
+    public void writeObject(Object currentField) throws IOException {
         whiteStreams.writeObject(currentField);
     }
 

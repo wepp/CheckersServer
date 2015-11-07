@@ -1,7 +1,7 @@
 package com.checkers.domain.server;
 
-import com.checkers.domain.vo.Player;
-import com.checkers.domain.vo.Step;
+import com.checkers.domain.vo.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
@@ -30,9 +30,10 @@ public class GameThread implements Runnable {
             CheckersRulesHolder checkersRulesHolder = new CheckersRulesHolder();
             this.finished = false;
             hisTurn = white;
+            ObjectMapper objectMapper = new ObjectMapper();
             while (!this.finished) {
-                hisTurn.writeObject(checkersRulesHolder.getField());
-                Step whiteStep = (Step) hisTurn.readObject();
+                hisTurn.writeObject(objectMapper.writeValueAsString(checkersRulesHolder.getField()));
+                Step whiteStep = objectMapper.readValue((String)hisTurn.readObject(), Step.class);
                 if(isValidTime(whiteStep.getUsedTime())
                    && checkersRulesHolder.setNextStep(whiteStep)){
                     hisTurn = hisTurn.equals(white) ? black : white;
@@ -44,9 +45,10 @@ public class GameThread implements Runnable {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException();
         } finally {
             closeAll();
+            hisTurn = hisTurn.equals(white) ? black : white;
+            this.finished = true;
         }
     }
 

@@ -32,7 +32,7 @@ public class InOutObjectStreams  {
         return inObjectWhite;
     }
 
-    public void writeObject(Field currentField) throws IOException {
+    public void writeObject(Object currentField) throws IOException {
         outObjWhite.writeObject(currentField);
     }
 

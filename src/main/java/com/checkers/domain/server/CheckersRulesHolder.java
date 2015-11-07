@@ -6,9 +6,10 @@ import com.checkers.domain.vo.Position;
 import com.checkers.domain.vo.Step;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 
-import java.net.Socket;
-import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 /**
  * Created by Eugene on 08.11.2015.
@@ -34,15 +35,15 @@ public class CheckersRulesHolder {
     }
 
     private void fillField(Field currentField) {
-        ArrayList<Check> checks = new ArrayList<Check>();
+        Set<Check> checks = Sets.newHashSet();
         for(int i=1;i<=8;i++){
             for(int j=1;j<=8;j++){
                 if(i%2==1){
                     if(j%2==0){
                         Check check = null;
                         Position pos = new Position(i,j);
-                        if(i<=3) check = new Check(pos,true);
-                        if(i>=6) check = new Check(pos,false);
+                        if(i<=3) check = new Check(pos,0);
+                        if(i>=6) check = new Check(pos,1);
                         if(check!=null) checks.add(check);
 
                     }
@@ -50,8 +51,8 @@ public class CheckersRulesHolder {
                     if(j%2==1){
                         Check check = null;
                         Position pos = new Position(i,j);
-                        if(i<=3) check = new Check(pos,true);
-                        if(i>=6) check = new Check(pos,false);
+                        if(i<=3) check = new Check(pos,0);
+                        if(i>=6) check = new Check(pos,1);
                         if(check!=null) checks.add(check);
                     }
                 }
@@ -68,87 +69,6 @@ public class CheckersRulesHolder {
         return calculateNextField(currentField, nextStep);
     }
 
-    public Socket winner() {
-        //TODO Eugen
-        return white;
-    }
-
-    private boolean isValidStep(Step nextStep) {
-        ArrayList<Position> possibleSteps = nextStep.getPositionAfterMove();
-        /**
-         * IF HAS NO MORE STEPS THAN
-         * NO VALID STEPS
-         */
-        if (possibleSteps.size() == 0)
-            return false;
-        if (possibleSteps.size() == 1)
-            return checkOptimalStep(nextStep);
-        return true;
-    }
-
-    private boolean checkOptimalStep(Step nextStep) {
-        Check currentCheck = nextStep.getCheck();
-        Position currentPosition = currentCheck.getPosition();
-        int curX = currentPosition.getX();
-        int curY = currentPosition.getY();
-        Position nextPosition = nextStep.getPositionAfterMove().get(0);
-        int nextX = nextPosition.getX();
-        int nextY = nextPosition.getY();
-
-        for (Check check : currentField.getAllChecks())
-            if (check.getPosition().getX() == nextX && check.getPosition().getY() == nextY)
-                return false;
-
-        /**
-         * SIMPLE STEP
-         */
-        if (isSimpleXStepOnBoard(currentCheck, curX, nextX)) {
-            /**
-             * IF OTHER CKECK IS ON THIS FIELD
-             */
-            return ((nextY == curY - 1 && nextY > MIN_SIZE) || (nextY == curY + 1 && nextY < MAX_SIZE));
-        } else if (isSimpleXAttackOnBoard(currentCheck, curX, nextX)) {
-            if (currentCheck.isWhite()) {
-                if (nextY == curY - 2) {
-                    for (Check check : currentField.getAllChecks())
-                        if (check.getPosition().getX() == curX - 1 && check.getPosition().getY() == curY - 1)
-                            return true;
-                } else if (nextY == curY + 2) {
-                    for (Check check : currentField.getAllChecks())
-                        if (check.getPosition().getX() == curX - 1 && check.getPosition().getY() == curY + 1)
-                            return true;
-                }
-            } else if (!currentCheck.isWhite()) {
-                if (nextY == curY - 2) {
-                    for (Check check : currentField.getAllChecks())
-                        if (check.getPosition().getX() == curX + 1 && check.getPosition().getY() == curY - 1)
-                            return true;
-                } else if (nextY == curY + 2) {
-                    for (Check check : currentField.getAllChecks())
-                        if (check.getPosition().getX() == curX + 1 && check.getPosition().getY() == curY + 1)
-                            return true;
-                }
-            }
-//                for (Check check : currentField.getAllChecks())
-//                    if (check.getPosition().getX() == nextX && check.getPosition().getY() == nextY)
-//                        return false;
-//                return true;
-        }
-        return false;
-    }
-
-    private boolean isSimpleXStepOnBoard(Check currentCheck, int curX, int nextX) {
-        return currentCheck.isWhite() && (curX - 1) == nextX && nextX > MIN_SIZE   // CHECK FOR WHITE CHECK STEP
-                ||
-                !currentCheck.isWhite() && (curX + 1) == nextX && nextX < MAX_SIZE;   // CHECK FOR BLACK CHECK STEP
-    }
-
-    private boolean isSimpleXAttackOnBoard(Check currentCheck, int curX, int nextX) {
-        return currentCheck.isWhite() && (curX - 2) == nextX && nextX > MIN_SIZE   // CHECK FOR WHITE CHECK ATTACK
-                ||
-                !currentCheck.isWhite() && (curX + 2) == nextX && nextX < MAX_SIZE;   // CHECK FOR BLACK CHECK ATTACK
-    }
-
     private boolean calculateNextField(Field currentField, Step nextStep) {
         boolean result = true;
         Check ourCheck = nextStep.getCheck();
@@ -161,8 +81,12 @@ public class CheckersRulesHolder {
     private boolean calculateNextField(Field currentField, Check check, Position position) {
         boolean result = true;
         result &= currentField.getAllChecks().contains(check);
-        result &= isPositionValid(position);
-        result &= isPositionValid(currentField, position);
+        result &= isPositionValid(position);//position is in borders
+        result &= isPositionValid(currentField, position);// there is no other checks on position
+        result &= canStep(currentField, check, position);//checks if it is heat if so is enemies check heated
+        if(result){
+            step(currentField, check, position);
+        }
         return result;
     }
 
@@ -177,7 +101,95 @@ public class CheckersRulesHolder {
 
     private boolean isPositionValid(Position position) {
         return position.getX() < MAX_SIZE && position.getX() > MIN_SIZE
-            && position.getY() < MAX_SIZE && position.getY() > MIN_SIZE;
+                && position.getY() < MAX_SIZE && position.getY() > MIN_SIZE;
+    }
+
+    private void step(Field currentField, Check check, Position position) {
+        if(isSimpleStep(check.getPosition(), position)){
+            makeSimpleStep(currentField, check, position);
+        }else {
+            makeHeatStep(currentField, check, position);
+        }
+    }
+
+    private void makeHeatStep(Field currentField, Check check, Position position) {
+        Position enemyPosition = countEnemyPosition(check.getPosition(), position);
+        Check enemy = getCheckByPosition(currentField, enemyPosition);
+        currentField.getAllChecks().remove(enemy);
+        makeSimpleStep(currentField, check, position);
+    }
+
+    private void makeSimpleStep(Field currentField, Check check, Position position) {
+        currentField.getAllChecks().remove(check);
+        check.setPosition(position);
+        if(positionForQueen(position)){
+            check.setQueen(true);
+        }
+        currentField.getAllChecks().add(check);
+    }
+
+    private boolean positionForQueen(Position position) {
+        return position.getY() == MAX_SIZE - 1;
+    }
+
+    private boolean canStep(Field currentField, Check check, Position position) {
+        return isSimpleStep(check.getPosition(), position)
+                || canBeat(currentField, check, position);
+    }
+
+    private boolean canBeat(Field currentField, Check check, Position position) {
+        boolean result = true;
+        result &= isHeatStep(check.getPosition(), position);
+        result &= (isQueenStep(check.getPosition(), position) && check.isQueen())
+                ||isSimpleCheckStep(check.getPosition(), position);
+
+        Position enemyPosition = countEnemyPosition(check.getPosition(), position);
+        Check enemy = getCheckByPosition(currentField, enemyPosition);
+
+        result &= enemy != null;
+        result &= areEnemies(check, enemy);
+        return result;
+    }
+
+    private boolean isSimpleStep(Position position, Position positionNew) {
+        return Math.abs(position.getY() - positionNew.getY()) == Math.abs(position.getX() - positionNew.getX())
+            && Math.abs(position.getY() - positionNew.getY()) == 1;
+    }
+
+    private boolean isHeatStep(Position position, Position positionNew) {
+        return Math.abs(position.getY() - positionNew.getY()) == Math.abs(position.getX() - positionNew.getX())
+                && Math.abs(position.getY() - positionNew.getY()) == 2;
+    }
+
+    private boolean isQueenStep(Position position, Position positionNew) {
+        return position.getY() - positionNew.getY() > 0;
+    }
+
+    private boolean isSimpleCheckStep(Position position, Position positionNew) {
+        return position.getY() - positionNew.getY() < 0;
+    }
+
+    private Position countEnemyPosition(Position position, Position positionNew) {
+        int newX = position.getX() + (position.getX() > positionNew.getX() ? -1 : 1);
+        int newY = position.getY() + (position.getY() > positionNew.getY() ? -1 : 1);
+        return new Position(newX, newY);
+    }
+
+    private boolean areEnemies(Check check, Check enemy) {
+        return check.getColor() != enemy.getColor();
+    }
+
+    private Check getCheckByPosition(Field currentField, final Position enemyPosition){
+        Check enemy = null;
+        try {
+            enemy = Iterables.find(currentField.getAllChecks(), new Predicate<Check>() {
+                @Override
+                public boolean apply(Check input) {
+                    return enemyPosition.equals(input.getPosition());
+                }
+            });
+        }catch (NoSuchElementException e){}
+        return enemy;
     }
 
     public Field getField() {

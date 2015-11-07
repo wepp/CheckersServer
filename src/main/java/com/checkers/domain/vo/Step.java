@@ -7,33 +7,41 @@ import java.util.ArrayList;
  * Created by Isaiev on 24.09.2015.
  */
 public class Step implements Serializable{
-    
+
     public static final long serialVersionUID = 43L;
 
     private Check check;
     private ArrayList<Position> positionAfterMove;
+    private long usedTime;
 
-    public Step(Check check, ArrayList<Position> positionAfterMove) {
+    public Step(Check check, ArrayList<Position> positionAfteMove) {
         this.check = check;
-        this.positionAfterMove = positionAfterMove;
+        this.positionAfterMove = positionAfteMove;
     }
     
     public Step(){};
-
-    public ArrayList<Position> getPositionAfterMove() {
-        return positionAfterMove;
-    }
 
     public Check getCheck() {
         return check;
     }
 
+    public ArrayList<Position> getPositionAfterMove() {
+        return positionAfterMove;
+    }
+
+    public void setUsedTime(long usedTime) {
+        this.usedTime = usedTime;
+    }
+
+    public long getUsedTime() {
+        return usedTime;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Step{");
-        sb.append("check=").append(check);
-        sb.append(", positionAfterMove=").append(positionAfterMove);
-        sb.append('}');
-        return sb.toString();
+        return "Step{" +
+                "check=" + check +
+                ", positionAfterMove=" + positionAfterMove +
+                '}';
     }
 }

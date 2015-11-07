@@ -1,10 +1,11 @@
 package com.checkers.domain.server;
 
+import com.checkers.domain.vo.InOutObjectStreams;
+import com.checkers.domain.vo.Player;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,6 +43,8 @@ public class Server {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -49,16 +52,20 @@ public class Server {
         return games;
     }
 
-    public void createNewBoard() throws IOException {
-        Socket white = null;
-        Socket black = null;
+    public void createNewBoard() throws IOException, ClassNotFoundException {
+        Player white = null;
+        Player black = null;
         while(white == null) {
-            white = recieverSocket.accept();
+            InOutObjectStreams whiteStreams = new InOutObjectStreams(recieverSocket.accept());
+            String whiteName = whiteStreams.waitForName();
+            white = new Player(whiteStreams, whiteName);
             System.out.println("white connected");
         }
         while(black == null) {
-            black = recieverSocket.accept();
-            System.out.println("black connected");
+            InOutObjectStreams blackStreams = new InOutObjectStreams(recieverSocket.accept());
+            String blackName = blackStreams.waitForName();
+            black = new Player(blackStreams, blackName);
+            System.out.println("white connected");
         }
         System.out.println("New game");
         GameThread game = new GameThread(white, black);

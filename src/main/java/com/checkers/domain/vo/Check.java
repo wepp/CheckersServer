@@ -10,6 +10,8 @@ public class Check {
     private int color;
     private boolean queen;
 
+    public Check(){}
+
     public Check(Position position, int color) {
         this.position = position;
         this.color = color;

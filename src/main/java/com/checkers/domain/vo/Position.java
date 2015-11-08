@@ -8,6 +8,8 @@ public class Position {
     private int y;
     private int x;
 
+    public Position(){}
+
     public Position(int x, int y) {
         this.x = x;
         this.y = y;

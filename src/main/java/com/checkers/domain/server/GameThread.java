@@ -1,7 +1,8 @@
 package com.checkers.domain.server;
 
-import com.checkers.domain.vo.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.checkers.domain.vo.Player;
+import com.checkers.domain.vo.Step;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 

@@ -37,14 +37,14 @@ public class Server {
     }
 
     public void startServer() {
-        try {
-            while (true) {
+        while (true) {
+            try {
                 createNewBoard();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 

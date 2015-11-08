@@ -1,5 +1,6 @@
 package com.checkers.domain.vo;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,7 +38,11 @@ public class InOutObjectStreams  {
     }
 
     public Object readObject() throws IOException, ClassNotFoundException {
-        return inObjectWhite.readObject();
+        try {
+            return inObjectWhite.readObject();
+        }catch (EOFException ex1){
+            return null;
+        }
     }
 
     public void close() throws IOException {
@@ -46,6 +51,6 @@ public class InOutObjectStreams  {
     }
 
     public String waitForName() throws IOException, ClassNotFoundException {
-        return (String) inObjectWhite.readObject();
+        return (String) readObject();
     }
 }

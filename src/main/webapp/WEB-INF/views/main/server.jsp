@@ -26,19 +26,14 @@
                 ajax: 'true'
             }, function (data) {
                 var len = data.length;
-                alert("len "+len);
                 for (var i = 0; i < len; i++) {
-                    alert("data "+data);
                     console.log(data);
                     var game = data[i];
-                    alert("game "+game);
-                    html += '<tr><td><a href="game.jsp?gameId=" ' + game.gameId + '>' + game.gameId + '</a></td><td>' + game.whiteName + '</td><td>' + data.blackName + '</td></tr>';
-                    alert("html "+html);
+                    html += '<tr><td><a href="/game.jsp?gameId=' + game.gameId + '">' + game.gameId + '</a></td><td>' + game.whiteName + '</td><td>' + game.blackName + '</td></tr>';
                 }
+                html += '</table>';
+                $('#games').html(html);
             });
-            html += '</table>';
-            alert("html "+html);
-            $('#games').html(html);
 
             $.getJSON('/amount', {
                 ajax: 'true'

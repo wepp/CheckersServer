@@ -61,7 +61,7 @@ public class CheckersRulesHolder {
         currentField.setAllChecks(checks);
     }
 
-    public void revert() {
+    public void revert(Field currentField) {
         Set newS = Sets.newHashSet();
         for(Check check: currentField.getAllChecks()){
             newS.add(revert(check));

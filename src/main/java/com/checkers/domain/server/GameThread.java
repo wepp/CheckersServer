@@ -38,7 +38,7 @@ public class GameThread implements Runnable {
                 if(isValidTime(whiteStep.getUsedTime())
                    && checkersRulesHolder.setNextStep(whiteStep)){
                     hisTurn = hisTurn.equals(white) ? black : white;
-                    checkersRulesHolder.revert();
+                    checkersRulesHolder.revert(checkersRulesHolder.getField());
                 }else {
                     hisTurn = hisTurn.equals(white) ? black : white;
                     this.finished = true;

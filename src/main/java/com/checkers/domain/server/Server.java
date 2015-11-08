@@ -71,7 +71,7 @@ public class Server {
         gameId++;
         System.out.println("New game with id "+gameId);
         GameThread game = new GameThread(white, black);
-        games.put(Integer.valueOf(gameId++), game);
+        games.put(Integer.valueOf(gameId), game);
         new Thread(game).start();
     }
 

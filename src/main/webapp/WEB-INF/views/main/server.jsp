@@ -20,7 +20,7 @@
         );
         getGames = function (){
             var html = '<table>';
-            html += '<tr><td>Game number</td><td>red team name</td><td>black team name</td></tr>';
+            html += '<tr><td>Game number</td><td>red team name</td><td>black team name</td><td>finished</td><td>winner</td></tr>';
             var i = 0;
             $.getJSON('/games', {
                 ajax: 'true'
@@ -29,7 +29,7 @@
                 for (var i = 0; i < len; i++) {
                     console.log(data);
                     var game = data[i];
-                    html += '<tr><td><a href="/game.jsp?gameId=' + game.gameId + '">' + game.gameId + '</a></td><td>' + game.whiteName + '</td><td>' + game.blackName + '</td></tr>';
+                    html += '<tr><td><a href="/game?gameId=' + game.gameId + '">' + game.gameId + '</a></td><td>' + game.whiteName + '</td><td>' + game.blackName + '</td><td>' + game.finished + '</td><td>' + game.winner + '</td></tr>';
                 }
                 html += '</table>';
                 $('#games').html(html);

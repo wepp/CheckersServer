@@ -38,7 +38,8 @@ public class ServerServiceImpl implements IServerService{
         List<Game> games = Lists.newArrayList();
         for(Map.Entry<Integer, GameThread> integerGameThreadEntry: server.getGames().entrySet()){
             games.add(new Game(integerGameThreadEntry.getKey(), integerGameThreadEntry.getValue().getWhite().getWhiteName()
-                    , integerGameThreadEntry.getValue().getBlack().getWhiteName()));
+                    , integerGameThreadEntry.getValue().getBlack().getWhiteName(),
+                    String.valueOf(integerGameThreadEntry.getValue().gameFinished()),  integerGameThreadEntry.getValue().getWinner().getWhiteName()));
         }
         return games;
     }

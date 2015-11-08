@@ -3,11 +3,11 @@ package com.checkers.domain.server;
 import com.checkers.domain.vo.Field;
 import com.checkers.domain.vo.Player;
 import com.checkers.domain.vo.Step;
-import com.google.common.collect.Lists;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Isaiev on 01.10.2015.
@@ -19,12 +19,12 @@ public class GameThread implements Runnable {
     private Player hisTurn;
     private long MAX_STEP_TIME = 5000;
     private boolean finished;
-    private List<Field> gameStory;
+    private Queue<Field> gameStory;
 
     public GameThread(Player white, Player black) {
         this.white = white;
         this.black = black;
-        gameStory = Lists.newArrayList();
+        gameStory = new ConcurrentLinkedQueue();
         System.out.println("Game registred");
     }
 
@@ -84,6 +84,10 @@ public class GameThread implements Runnable {
         }else {
             return null;
         }
+    }
+
+    public Queue<Field> getGameStory() {
+        return gameStory;
     }
 
     private void closeAll() {

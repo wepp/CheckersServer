@@ -62,7 +62,24 @@ public class CheckersRulesHolder {
     }
 
     public void revert() {
+        Set newS = Sets.newHashSet();
+        for(Check check: currentField.getAllChecks()){
+            newS.add(revert(check));
+        }
+        currentField.setAllChecks(newS);
+    }
 
+    private Check revert(Check check) {
+        Check result = new Check();
+        Position position = revert(check.getPosition());
+        result.setQueen(check.isQueen());
+        result.setPosition(position);
+        result.setColor(check.getColor() == 0 ? 1 : 0);
+        return result;
+    }
+
+    private Position revert(Position position) {
+        return new Position(MAX_SIZE - position.getX(), MAX_SIZE - position.getY());
     }
 
     public boolean setNextStep(Step nextStep) {

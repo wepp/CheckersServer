@@ -74,6 +74,14 @@ public class GameThread implements Runnable {
         return usedTime < MAX_STEP_TIME;
     }
 
+    public Player getWhite() {
+        return white;
+    }
+
+    public Player getBlack() {
+        return black;
+    }
+
     public boolean gameFinished(){
         return finished;
     }

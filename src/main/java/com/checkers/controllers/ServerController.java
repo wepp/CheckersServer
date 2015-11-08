@@ -1,17 +1,17 @@
 package com.checkers.controllers;
 
 import com.checkers.domain.server.GameThread;
-import com.checkers.domain.server.Server;
+import com.checkers.domain.vo.Game;
 import com.checkers.services.IServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by KutsykV on 08.10.2015.
@@ -40,7 +40,8 @@ public class ServerController {
     @RequestMapping(value = "/games", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<GameThread> games() {
+    List<Game> games() {
         return serverService.getGames();
     }
+
 }

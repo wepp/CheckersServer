@@ -1,6 +1,6 @@
 package com.checkers.services;
 
-import com.checkers.domain.server.GameThread;
+import com.checkers.domain.vo.Game;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import java.util.List;
 public interface IServerService {
     boolean serverStarted();
     void startServer();
-    List<GameThread> getGames();
+    List<Game> getGames();
     int getGamesAmount();
 }

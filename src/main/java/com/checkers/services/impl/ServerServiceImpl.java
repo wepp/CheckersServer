@@ -2,11 +2,14 @@ package com.checkers.services.impl;
 
 import com.checkers.domain.server.GameThread;
 import com.checkers.domain.server.Server;
+import com.checkers.domain.vo.Game;
 import com.checkers.services.IServerService;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by KutsykV on 06.10.2015.
@@ -31,8 +34,13 @@ public class ServerServiceImpl implements IServerService{
     }
 
     @Override
-    public List<GameThread> getGames() {
-        return server.getGames();
+    public List<Game> getGames() {
+        List<Game> games = Lists.newArrayList();
+        for(Map.Entry<Integer, GameThread> integerGameThreadEntry: server.getGames().entrySet()){
+            games.add(new Game(integerGameThreadEntry.getKey(), integerGameThreadEntry.getValue().getWhite().getWhiteName()
+                    , integerGameThreadEntry.getValue().getBlack().getWhiteName()));
+        }
+        return games;
     }
 
     @Override

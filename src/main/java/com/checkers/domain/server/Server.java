@@ -2,12 +2,12 @@ package com.checkers.domain.server;
 
 import com.checkers.domain.vo.InOutObjectStreams;
 import com.checkers.domain.vo.Player;
+import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Isaiev on 01.10.2015.
@@ -18,7 +18,8 @@ import java.util.List;
 public class Server {
 
     private ServerSocket recieverSocket = null;
-    private List<GameThread> games;
+    private Map<Integer, GameThread> games;
+    private volatile int gameId = 0;
     
     Server(){
     }
@@ -30,25 +31,25 @@ public class Server {
     public void registerServer() {
         try {
             recieverSocket = new ServerSocket(8181);
-            games = new LinkedList<GameThread>();
+            games = Maps.newConcurrentMap();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void startServer() {
+        try {
         while (true) {
-            try {
                 createNewBoard();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
-    public List<GameThread> getGames() {
+    public Map<Integer, GameThread> getGames() {
         return games;
     }
 
@@ -59,17 +60,18 @@ public class Server {
             InOutObjectStreams whiteStreams = new InOutObjectStreams(recieverSocket.accept());
             String whiteName = whiteStreams.waitForName();
             white = new Player(whiteStreams, whiteName);
-            System.out.println("white connected");
+            System.out.println("white player nae is "+whiteName);
         }
         while(black == null) {
             InOutObjectStreams blackStreams = new InOutObjectStreams(recieverSocket.accept());
             String blackName = blackStreams.waitForName();
             black = new Player(blackStreams, blackName);
-            System.out.println("white connected");
+            System.out.println("black player nae is "+blackName);
         }
-        System.out.println("New game");
+        gameId++;
+        System.out.println("New game with id "+gameId);
         GameThread game = new GameThread(white, black);
-        games.add(game);
+        games.put(Integer.valueOf(gameId++), game);
         new Thread(game).start();
     }
 

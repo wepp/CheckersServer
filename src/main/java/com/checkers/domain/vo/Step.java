@@ -21,8 +21,17 @@ public class Step implements Serializable{
     
     public Step(){};
 
+
+    public void setCheck(Check check) {
+        this.check = check;
+    }
+
     public Check getCheck() {
         return check;
+    }
+
+    public void setPositionAfterMove(ArrayList<Position> positionAfterMove) {
+        this.positionAfterMove = positionAfterMove;
     }
 
     public ArrayList<Position> getPositionAfterMove() {

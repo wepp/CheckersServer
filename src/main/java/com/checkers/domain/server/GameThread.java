@@ -54,7 +54,7 @@ public class GameThread implements Runnable {
     }
 
     private boolean isValidTime(long usedTime) {
-        return usedTime > MAX_STEP_TIME;
+        return usedTime < MAX_STEP_TIME;
     }
 
     public boolean gameFinished(){

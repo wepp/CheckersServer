@@ -14,34 +14,33 @@
 
     <script>
         $(document).ready(
-                function () {
-                    var html = '<table>';
-                    html += '<tr><td>Game number</td><td>Result</td></tr>';
-                    var i = 0;
-                    $.getJSON('/games', {
-                        ajax: 'true'
-                    }, function (data) {
-                        var len = data.length;
-                        for (var i = 0; i < len; i++) {
-                            var gameResult = '';
-//                            if (data[i].winner() != null) {
-//                                console.log('has winner');
-//                            } else console.log('stil playing');
-                            console.log(data);
-                            html += '<tr><td>' + i + '</td><td>' + gameResult + '</td></tr>';
-                        }
-                    });
-                    html += '</table>';
-                    $('#games').html(html);
-
-                    $.getJSON('/amount', {
-                        ajax: 'true'
-                    }, function (data) {
-                        $('#gamesAmount').html(data);
-                    });
-
-                }
+                window.setInterval(function(){
+                    getGames();
+                }, 5000)
         );
+        getGames = function (){
+            var html = '<table>';
+            html += '<tr><td>Game number</td><td>red team name</td><td>black team name</td></tr>';
+            var i = 0;
+            $.getJSON('/games', {
+                ajax: 'true'
+            }, function (data) {
+                var len = data.length;
+                for (var i = 0; i < len; i++) {
+                    console.log(data);
+                    html += '<tr><td><a href="game.jsp?gameId=" ' + data.gameId + '>' + data.gameId + '</a></td><td>' + data.whiteName + '</td><td>' + data.blackName + '</td></tr>';
+                }
+            });
+            html += '</table>';
+            $('#games').html(html);
+
+            $.getJSON('/amount', {
+                ajax: 'true'
+            }, function (data) {
+                $('#gamesAmount').html(data);
+            });
+
+        }
     </script>
 </head>
 <body>

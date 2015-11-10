@@ -16,7 +16,7 @@
         $(document).ready(
                 window.setInterval(function(){
                     getGames();
-                }, 5000)
+                }, 2000)
         );
         getGames = function (){
             var html = '<table>';
@@ -29,7 +29,7 @@
                 for (var i = 0; i < len; i++) {
                     console.log(data);
                     var game = data[i];
-                    html += '<tr><td><a href="field/' + game.gameId + '">' + game.gameId + '</a></td><td>' + game.whiteName + '</td><td>' + game.blackName + '</td><td>' + game.finished + '</td><td>' + game.winner + '</td></tr>';
+                    html += '<tr><td><a href="game/' + game.gameId + '">' + game.gameId + '</a></td><td>' + game.whiteName + '</td><td>' + game.blackName + '</td><td>' + game.finished + '</td><td>' + game.winner + '</td></tr>';
                 }
                 html += '</table>';
                 $('#games').html(html);

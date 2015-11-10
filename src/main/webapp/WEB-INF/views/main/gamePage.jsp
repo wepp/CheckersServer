@@ -20,78 +20,96 @@
     $(document).ready(
             window.setInterval(function(){
               getGame();
-            }, 10000)
+            }, 5000)
     );
-    getGames = function (){
+    getGame = function () {
       var i = 0;
-      $.getJSON('/game/'+id, {
+      $.getJSON('/field/' + id, {
         ajax: 'true'
       }, function (data) {
+        var cheks = data.field;
         var finished = data.finished;
         var whiteName = data.whiteName;
         var blackName = data.blackName;
         var winner = data.winner;
         $('#white').text(whiteName);
         $('#black').text(blackName);
-        if(finished === true){
+        if (finished === true) {
           $('#winner').text(winner);
-        }else {
-
         }
-        var html = "<table>";
-        var cheks = data.field;
-        for (var i = 0; i < 8; i++) {
-          html += '<tr>';
+        if(cheks !== undefined && cheks != null && cheks.length > 0){
+          var whiteAmount = getAmount(cheks, 0);
+          var blackAmount = getAmount(cheks, 1);
+          $('#whiteAmount').text(whiteAmount);
+          $('#blackAmount').text(blackAmount);
+
+          var html = "<table>";
+          for (var i = 7; i >= 0; i--) {
+            html += '<tr><td>'+i+'</td>';
+            for (var j = 0; j < 8; j++) {
+              html += '<td>'+image(cheks, i, j)+'</td>';
+            }
+            html += '</tr>';
+          }
+          html += '<tr><td></td>';
           for (var j = 0; j < 8; j++) {
-            html += '<td>'+image(cheks, i, j)+'</td>';
+            html += '<td>'+j+'</td>';
           }
           html += '</tr>';
+          html += '</table>';
+          $('#game').html(html);
         }
-        html += '</table>';
-        $('#game').html(html);
       });
+    };
 
-      image = function(data, x, y){
-        var res = '<img src="images/girl.png" width="189" height="255" alt="lorem">';
-        for(var i = 0; i < data.length; i++){
-          var check = data[i];
-          if(check.x === x && check.y === y){
-            return '<img src="'+imageUrl(check.color, check.queen)+'" width="50" height="50">';
-          }
-          return '<img src="'+imageUrl(50, false)+'" width="50" height="50">';
+    image = function(data, x, y){
+      var res = '<img src="images/girl.png" width="189" height="255" alt="lorem">';
+      var x_cord = x + 1;
+      var y_cord = y + 1;
+      for(var i = 0; i < data.length; i++){
+        var check = data[i];
+        if(check.position.x === x_cord && check.position.y === y_cord){
+          return '<img src="'+imageUrl(check.color, check.queen)+'" width="50" height="50">';
         }
       }
+      return '<img src="'+imageUrl(50, false)+'" width="50" height="50">';
+    };
 
-      image = function(x, y){
-        if(x === 50){
-          return "https://literaryundertakings.files.wordpress.com/2014/10/olympia_blue.jpg";
-        }
-        if(x === 0, y === false){
-          return "http://megocomp.ru/wp-content/uploads/2014/03/vQBzi.png";
-        }
-        if(x === 0, y === true){
-          return "http://fs153.www.ex.ua/show/55118254/55118254.png";
-        }
-        if(x === 1, y === false){
-          return "http://b4p.at.ua/Oblogki/firefox_b4p.at.ua..png";
-        }
-        if(x === 1, y === true){
-          return "http://rocketdock.com/images/screenshots/firefox-red-1.png";
-        }
+    imageUrl = function(x, y){
+      if(x === 50){
+        return "https://literaryundertakings.files.wordpress.com/2014/10/olympia_blue.jpg";
       }
+      if(x === 0 && y === false){
+        return "http://megocomp.ru/wp-content/uploads/2014/03/vQBzi.png";
+      }
+      if(x === 0 && y === true){
+        return "http://fs153.www.ex.ua/show/55118254/55118254.png";
+      }
+      if(x === 1 && y === false){
+        return "http://b4p.at.ua/Oblogki/firefox_b4p.at.ua..png";
+      }
+      if(x === 1 && y === true){
+        return "http://rocketdock.com/images/screenshots/firefox-red-1.png";
+      }
+    };
 
-    }
+    getAmount = function(data, x){
+      var res = 0;
+      for(var i = 0; i < data.length; i++){
+        if(data[i].color === x)
+          res = res + 1;
+      }
+      return res;
+    };
   </script>
 </head>
 <body>
-${gameId}
 
 <table>
-  <tr><td>Game number</td><td>red team name</td><td>black team name</td>
-  <tr><td><div id="white"></div></td><td><div id="black"></div></td><td><div id="winner"></div></td>
+  <tr><td>red team name</td><td>left</td><td>middle</td><td>right</td><td>black team name</td></tr>
+  <tr><td id="white"></td><td id="whiteAmount"></td><td> - </td><td id="blackAmount"></td><td id="black"></td></tr>
 </table>
-<div id="game">
 
-</div>
+<div id="game"></div>
 </body>
 </html>

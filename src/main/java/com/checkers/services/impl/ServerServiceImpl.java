@@ -56,12 +56,21 @@ public class ServerServiceImpl implements IServerService{
         final Integer id = Integer.valueOf(gameId);
         GameThread game = server.getGames().get(id);
         if(game.gameFinished()) {
-            return new Game(id,
-                    game.getWhite().getWhiteName(),
-                    game.getBlack().getWhiteName(),
-                    game.gameFinished(),
-                    game.getWinner().getWhiteName(),
-                    game.getGameStory().poll().getAllChecks());
+            if(!game.getGameStory().isEmpty()) {
+                return new Game(id,
+                        game.getWhite().getWhiteName(),
+                        game.getBlack().getWhiteName(),
+                        game.gameFinished(),
+                        game.getWinner().getWhiteName(),
+                        game.getGameStory().poll().getAllChecks());
+            } else {
+                return new Game(id,
+                        game.getWhite().getWhiteName(),
+                        game.getBlack().getWhiteName(),
+                        game.gameFinished(),
+                        game.getWinner().getWhiteName(),
+                        null);
+            }
         }else
             return new Game(id,
                     game.getWhite().getWhiteName(),

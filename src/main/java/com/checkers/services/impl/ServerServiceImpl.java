@@ -40,7 +40,7 @@ public class ServerServiceImpl implements IServerService{
             games.add(new Game(integerGameThreadEntry.getKey(),
                     integerGameThreadEntry.getValue().getWhite().getWhiteName(),
                     integerGameThreadEntry.getValue().getBlack().getWhiteName(),
-                    String.valueOf(integerGameThreadEntry.getValue().gameFinished()),
+                    integerGameThreadEntry.getValue().gameFinished(),
                     integerGameThreadEntry.getValue().getWinner().getWhiteName()));
         }
         return games;
@@ -59,14 +59,14 @@ public class ServerServiceImpl implements IServerService{
             return new Game(id,
                     game.getWhite().getWhiteName(),
                     game.getBlack().getWhiteName(),
-                    String.valueOf(game.gameFinished()),
+                    game.gameFinished(),
                     game.getWinner().getWhiteName(),
                     game.getGameStory().poll().getAllChecks());
         }else
             return new Game(id,
                     game.getWhite().getWhiteName(),
                     game.getBlack().getWhiteName(),
-                    null,
+                    false,
                     null,
                     game.getGameStory().poll().getAllChecks());
     }

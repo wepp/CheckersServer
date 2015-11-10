@@ -9,14 +9,14 @@ public class Game {
     private int gameId;
     private String whiteName;
     private String blackName;
-    private String finished;
+    private boolean finished;
     private String winner;
     private Set<Check> field;
 
     public Game() {
     }
 
-    public Game(int gameId, String whiteName, String blackName, String finished, String winner) {
+    public Game(int gameId, String whiteName, String blackName, boolean finished, String winner) {
         this.gameId = gameId;
         this.whiteName = whiteName;
         this.blackName = blackName;
@@ -24,7 +24,7 @@ public class Game {
         this.winner = winner;
     }
 
-    public Game(int gameId, String whiteName, String blackName, String finished, String winner, Set<Check> field) {
+    public Game(int gameId, String whiteName, String blackName, boolean finished, String winner, Set<Check> field) {
         this.gameId = gameId;
         this.whiteName = whiteName;
         this.blackName = blackName;
@@ -57,11 +57,11 @@ public class Game {
         this.blackName = blackName;
     }
 
-    public String getFinished() {
+    public boolean getFinished() {
         return finished;
     }
 
-    public void setFinished(String finished) {
+    public void setFinished(boolean finished) {
         this.finished = finished;
     }
 

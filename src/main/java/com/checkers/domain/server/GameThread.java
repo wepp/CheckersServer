@@ -37,6 +37,7 @@ public class GameThread implements Runnable {
             this.finished = false;
             hisTurn = white;
             ObjectMapper objectMapper = new ObjectMapper();
+            gameStory.add(checkersRulesHolder.getField());
             while (!this.finished) {
                 hisTurn.writeObject(objectMapper.writeValueAsString(checkersRulesHolder.getField()));
                 Step whiteStep = objectMapper.readValue((String)hisTurn.readObject(), Step.class);

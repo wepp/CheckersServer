@@ -29,7 +29,7 @@
                 for (var i = 0; i < len; i++) {
                     console.log(data);
                     var game = data[i];
-                    html += '<tr><td><a href="/game?gameId=' + game.gameId + '">' + game.gameId + '</a></td><td>' + game.whiteName + '</td><td>' + game.blackName + '</td><td>' + game.finished + '</td><td>' + game.winner + '</td></tr>';
+                    html += '<tr><td><a href="gamePage/' + game.gameId + '">' + game.gameId + '</a></td><td>' + game.whiteName + '</td><td>' + game.blackName + '</td><td>' + game.finished + '</td><td>' + game.winner + '</td></tr>';
                 }
                 html += '</table>';
                 $('#games').html(html);

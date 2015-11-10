@@ -1,5 +1,7 @@
 package com.checkers.domain.vo;
 
+import java.util.Set;
+
 /**
  * Created by Eugene on 08.11.2015.
  */
@@ -9,6 +11,7 @@ public class Game {
     private String blackName;
     private String finished;
     private String winner;
+    private Set<Check> field;
 
     public Game() {
     }
@@ -19,6 +22,15 @@ public class Game {
         this.blackName = blackName;
         this.finished = finished;
         this.winner = winner;
+    }
+
+    public Game(int gameId, String whiteName, String blackName, String finished, String winner, Set<Check> field) {
+        this.gameId = gameId;
+        this.whiteName = whiteName;
+        this.blackName = blackName;
+        this.finished = finished;
+        this.winner = winner;
+        this.field = field;
     }
 
     public int getGameId() {
@@ -59,5 +71,13 @@ public class Game {
 
     public void setWinner(String winner) {
         this.winner = winner;
+    }
+
+    public Set<Check> getField() {
+        return field;
+    }
+
+    public void setField(Set<Check> field) {
+        this.field = field;
     }
 }

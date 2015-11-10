@@ -9,7 +9,7 @@
     <script src="/resources/js/jquery.validate.min.js"></script>
 </head>
 <body>
-
+<h2>Hi Dev</h2>
 <div>
     This is main page of checkers server. Click here for watch playign games;
     <a href="server">Games page</a>

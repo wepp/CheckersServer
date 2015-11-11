@@ -41,8 +41,8 @@ public class GameThread implements Runnable {
             while (!this.finished) {
                 hisTurn.writeObject(objectMapper.writeValueAsString(checkersRulesHolder.getField()));
                 Step whiteStep = objectMapper.readValue((String)hisTurn.readObject(), Step.class);
-                if(isValidTime(whiteStep.getUsedTime())
-                   && checkersRulesHolder.setNextStep(whiteStep)){
+                if(/*isValidTime(whiteStep.getUsedTime())
+                   &&*/ checkersRulesHolder.setNextStep(whiteStep)){
                     if(hisTurn.equals(white)){
                         gameStory.add(checkersRulesHolder.getField());
                         checkersRulesHolder.revert(checkersRulesHolder.getField());

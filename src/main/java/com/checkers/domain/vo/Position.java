@@ -5,8 +5,8 @@ package com.checkers.domain.vo;
  */
 public class Position {
 
-    private int y;
     private int x;
+    private int y;
 
     public Position(){}
 
@@ -15,12 +15,12 @@ public class Position {
         this.y = y;
     }
 
-    public int getY() {
-        return y;
-    }
-
     public int getX() {
         return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     @Override

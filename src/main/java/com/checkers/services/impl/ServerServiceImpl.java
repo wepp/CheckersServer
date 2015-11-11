@@ -41,7 +41,9 @@ public class ServerServiceImpl implements IServerService{
                     integerGameThreadEntry.getValue().getWhite().getWhiteName(),
                     integerGameThreadEntry.getValue().getBlack().getWhiteName(),
                     integerGameThreadEntry.getValue().gameFinished(),
-                    integerGameThreadEntry.getValue().getWinner().getWhiteName()));
+                    integerGameThreadEntry.getValue().gameFinished() ?
+                            integerGameThreadEntry.getValue().getWinner().getWhiteName()
+                            : null));
         }
         return games;
     }
@@ -55,29 +57,25 @@ public class ServerServiceImpl implements IServerService{
     public Game getGame(String gameId) {
         final Integer id = Integer.valueOf(gameId);
         GameThread game = server.getGames().get(id);
-        if(game.gameFinished()) {
-            if(!game.getGameStory().isEmpty()) {
-                return new Game(id,
-                        game.getWhite().getWhiteName(),
-                        game.getBlack().getWhiteName(),
-                        game.gameFinished(),
-                        game.getWinner().getWhiteName(),
-                        game.getGameStory().poll().getAllChecks());
-            } else {
-                return new Game(id,
-                        game.getWhite().getWhiteName(),
-                        game.getBlack().getWhiteName(),
-                        game.gameFinished(),
-                        game.getWinner().getWhiteName(),
-                        null);
-            }
-        }else
+        if(!game.getGameStory().isEmpty()) {
             return new Game(id,
                     game.getWhite().getWhiteName(),
                     game.getBlack().getWhiteName(),
-                    false,
-                    null,
+                    game.gameFinished(),
+                    game.gameFinished() ?
+                            game.getWinner().getWhiteName()
+                            :null,
                     game.getGameStory().poll().getAllChecks());
+        } else {
+            return new Game(id,
+                    game.getWhite().getWhiteName(),
+                    game.getBlack().getWhiteName(),
+                    game.gameFinished(),
+                    game.gameFinished() ?
+                            game.getWinner().getWhiteName()
+                            :null,
+                    null);
+        }
     }
 
     @Override

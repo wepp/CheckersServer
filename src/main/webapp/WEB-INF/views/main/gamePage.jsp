@@ -44,17 +44,24 @@
           $('#blackAmount').text(blackAmount);
 
           var html = "<table>";
+          html += '<tr><td></td>';
+          for (var j = 0; j < 8; j++) {
+            html += '<td>'+(7 - j)+'</td>';
+          }
+          html += '<td></td>';
           for (var i = 7; i >= 0; i--) {
+            html += '</tr>';
             html += '<tr><td>'+i+'</td>';
             for (var j = 0; j < 8; j++) {
-              html += '<td>'+image(cheks, i, j)+'</td>';
+              html += '<td>'+image(cheks, j, i)+'</td>';
             }
-            html += '</tr>';
+            html += '<td>'+(7 - i)+'</td>';
           }
           html += '<tr><td></td>';
           for (var j = 0; j < 8; j++) {
             html += '<td>'+j+'</td>';
           }
+          html += '<td></td>';
           html += '</tr>';
           html += '</table>';
           $('#game').html(html);
@@ -64,8 +71,8 @@
 
     image = function(data, x, y){
       var res = '<img src="images/girl.png" width="189" height="255" alt="lorem">';
-      var x_cord = x + 1;
-      var y_cord = y + 1;
+      var x_cord = x;
+      var y_cord = y;
       for(var i = 0; i < data.length; i++){
         var check = data[i];
         if(check.position.x === x_cord && check.position.y === y_cord){

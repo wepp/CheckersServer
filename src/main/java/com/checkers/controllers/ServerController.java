@@ -43,13 +43,15 @@ public class ServerController {
         return serverService.getGames();
     }
 
-    @RequestMapping(value = "/field/{gameId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{gameId}/field/{fieldNum}", method = RequestMethod.GET)
     public
     @ResponseBody
     Game field(
-            @PathVariable String gameId, Model model) {
+            @PathVariable String gameId,
+            @PathVariable String fieldNum,
+            Model model) {
         model.addAttribute("gameId", gameId);
-        return serverService.getGame(gameId);
+        return serverService.getGame(gameId, fieldNum);
     }
 
 

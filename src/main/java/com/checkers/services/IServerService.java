@@ -15,7 +15,7 @@ public interface IServerService {
     List<Game> getGames();
     int getGamesAmount();
 
-    Game getGame(String gameId);
+    Game getGame(String gameId, String fieldNum);
 
     boolean finished(String gameId);
 

@@ -6,8 +6,10 @@ import com.checkers.domain.vo.Step;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Isaiev on 01.10.2015.
@@ -20,11 +22,13 @@ public class GameThread implements Runnable {
     private long MAX_STEP_TIME = 5000;
     private boolean finished;
     private Queue<Field> gameStory;
+    private List<Field> gameStoryStrings;
 
     public GameThread(Player white, Player black) {
         this.white = white;
         this.black = black;
         gameStory = new ConcurrentLinkedQueue();
+        gameStoryStrings = new CopyOnWriteArrayList<Field>();
         System.out.println("Game registred");
     }
 
@@ -37,26 +41,26 @@ public class GameThread implements Runnable {
             this.finished = false;
             hisTurn = white;
             ObjectMapper objectMapper = new ObjectMapper();
-            gameStory.add(checkersRulesHolder.getField());
+            saveStep(checkersRulesHolder.getField());
             while (!this.finished) {
                 hisTurn.writeObject(objectMapper.writeValueAsString(checkersRulesHolder.getField()));
                 Step whiteStep = objectMapper.readValue((String)hisTurn.readObject(), Step.class);
                 if(/*isValidTime(whiteStep.getUsedTime())
                    &&*/ checkersRulesHolder.setNextStep(whiteStep)){
                     if(hisTurn.equals(white)){
-                        gameStory.add(checkersRulesHolder.getField());
+                        saveStep(checkersRulesHolder.getField());
                         checkersRulesHolder.revert(checkersRulesHolder.getField());
                     } else{
                         checkersRulesHolder.revert(checkersRulesHolder.getField());
-                        gameStory.add(checkersRulesHolder.getField());
+                        saveStep(checkersRulesHolder.getField());
                     }
                     hisTurn = hisTurn.equals(white) ? black : white;
                 }else {
                     if(hisTurn.equals(white)){
-                        gameStory.add(checkersRulesHolder.getField());
+                        saveStep(checkersRulesHolder.getField());
                     } else{
                         checkersRulesHolder.revert(checkersRulesHolder.getField());
-                        gameStory.add(checkersRulesHolder.getField());
+                        saveStep(checkersRulesHolder.getField());
                     }
                     hisTurn = hisTurn.equals(white) ? black : white;
                     this.finished = true;
@@ -69,6 +73,12 @@ public class GameThread implements Runnable {
             hisTurn = hisTurn.equals(white) ? black : white;
             this.finished = true;
         }
+    }
+
+    private void saveStep(Field field){
+        Field fieldNew = new Field(field);
+        gameStory.add(fieldNew);
+        gameStoryStrings.add(fieldNew);
     }
 
     private boolean isValidTime(long usedTime) {
@@ -97,6 +107,10 @@ public class GameThread implements Runnable {
 
     public Queue<Field> getGameStory() {
         return gameStory;
+    }
+
+    public List<Field> getGameStoryStrings() {
+        return gameStoryStrings;
     }
 
     private void closeAll() {

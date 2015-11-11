@@ -18,6 +18,13 @@ public class Field implements Serializable {
         allChecks= Sets.newHashSet();
     }
 
+    public Field(Field field) {
+        allChecks= Sets.newHashSet();
+        for(Check check: field.allChecks){
+            this.allChecks.add(new Check(check));
+        }
+    }
+
     public Set<Check> getAllChecks() {
         return allChecks;
     }

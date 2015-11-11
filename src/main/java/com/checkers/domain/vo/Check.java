@@ -18,6 +18,12 @@ public class Check {
         this.queen = false;
     }
 
+    public Check(Check check) {
+        this.position = new Position(check.getPosition());
+        this.color = check.getColor();
+        this.queen = check.isQueen();
+    }
+
     public void setPosition(Position position) {
         this.position = position;
     }

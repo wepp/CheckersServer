@@ -54,10 +54,11 @@ public class ServerServiceImpl implements IServerService{
     }
 
     @Override
-    public Game getGame(String gameId) {
+    public Game getGame(String gameId, String fieldNum) {
         final Integer id = Integer.valueOf(gameId);
+        final Integer fieldNumInt = Integer.valueOf(fieldNum);
         GameThread game = server.getGames().get(id);
-        if(!game.getGameStory().isEmpty()) {
+        if(game.getGameStoryStrings().size() > fieldNumInt) {
             return new Game(id,
                     game.getWhite().getWhiteName(),
                     game.getBlack().getWhiteName(),
@@ -65,7 +66,7 @@ public class ServerServiceImpl implements IServerService{
                     game.gameFinished() ?
                             game.getWinner().getWhiteName()
                             :null,
-                    game.getGameStory().poll().getAllChecks());
+                    game.getGameStoryStrings().get(fieldNumInt).getAllChecks());
         } else {
             return new Game(id,
                     game.getWhite().getWhiteName(),

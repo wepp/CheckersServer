@@ -17,14 +17,18 @@
 
   <script>
     var id = ${gameId};
+    var currentStep = 0;
     $(document).ready(
-            window.setInterval(function(){
+            function(){
               getGame();
-            }, 5000)
+              window.setInterval(function(){
+                getGame();
+              }, 5000);
+            }
     );
     getGame = function () {
       var i = 0;
-      $.getJSON('/field/' + id, {
+      $.getJSON('/'+id+'/field/' + currentStep, {
         ajax: 'true'
       }, function (data) {
         var cheks = data.field;
@@ -34,6 +38,7 @@
         var winner = data.winner;
         $('#white').text(whiteName);
         $('#black').text(blackName);
+        $('#currentStep').text(currentStep);
         if (finished === true) {
           $('#winner').text(winner);
         }
@@ -65,6 +70,7 @@
           html += '</tr>';
           html += '</table>';
           $('#game').html(html);
+          currentStep = currentStep + 1;
         }
       });
     };
@@ -116,6 +122,8 @@
   <tr><td>red team name</td><td>left</td><td>middle</td><td>right</td><td>black team name</td></tr>
   <tr><td id="white"></td><td id="whiteAmount"></td><td> - </td><td id="blackAmount"></td><td id="black"></td></tr>
 </table>
+
+<div id="currentStep"></div>
 
 <div id="game"></div>
 </body>

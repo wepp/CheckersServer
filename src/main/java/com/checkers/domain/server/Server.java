@@ -30,7 +30,7 @@ public class Server {
 
     public void registerServer() {
         try {
-            recieverSocket = new ServerSocket(8181);
+            recieverSocket = new ServerSocket(8282);
             games = Maps.newConcurrentMap();
         } catch (IOException e) {
             e.printStackTrace();

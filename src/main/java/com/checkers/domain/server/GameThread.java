@@ -62,7 +62,6 @@ public class GameThread implements Runnable {
                         checkersRulesHolder.revert(checkersRulesHolder.getField());
                         saveStep(checkersRulesHolder.getField());
                     }
-                    hisTurn = hisTurn.equals(white) ? black : white;
                     this.finished = true;
                 }
             }

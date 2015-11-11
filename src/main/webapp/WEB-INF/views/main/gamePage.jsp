@@ -18,12 +18,19 @@
   <script>
     var id = ${gameId};
     var currentStep = 0;
+    var timeToVait = 5000;
     $(document).ready(
             function(){
               getGame();
               window.setInterval(function(){
                 getGame();
-              }, 5000);
+              }, timeToVait);
+              $( "#previousF" ).click(function() {
+                currentStep = currentStep - 1;
+              });
+              $( "#nextF" ).click(function() {
+                currentStep = currentStep + 1;
+              });
             }
     );
     getGame = function () {
@@ -40,7 +47,7 @@
         $('#black').text(blackName);
         $('#currentStep').text(currentStep);
         if (finished === true) {
-          $('#winner').text(winner);
+          $('#winner').text('Winner IS : '+winner);
         }
         if(cheks !== undefined && cheks != null && cheks.length > 0){
           var whiteAmount = getAmount(cheks, 0);
@@ -123,7 +130,16 @@
   <tr><td id="white"></td><td id="whiteAmount"></td><td> - </td><td id="blackAmount"></td><td id="black"></td></tr>
 </table>
 
+<div id="winner" style="font-size: 20px"></div>
+<br>
+current step
 <div id="currentStep"></div>
+<button id="previousF">
+  Click here to go to previous field
+</button>
+<button id="nextF">
+  Click here to go to next field
+</button>
 
 <div id="game"></div>
 </body>

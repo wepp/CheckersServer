@@ -78,4 +78,13 @@ public class Server {
     public int getGamesAmount(){
         return games.size();
     }
+
+    public void stop() {
+        if(!recieverSocket.isClosed())
+            try {
+                recieverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
 }

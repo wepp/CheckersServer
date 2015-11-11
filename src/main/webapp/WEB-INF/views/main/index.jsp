@@ -11,8 +11,9 @@
 <body>
 <h2>Hi Dev</h2>
 <div>
-    This is main page of checkers server. Click here for watch playign games;
-    <a href="server">Games page</a>
+    This is main page of checkers server. Click here for watch playing games;
+    <a href="server">Start server</a>
+    <a href="stop">Stop server</a>
 </div>
 
 </body>

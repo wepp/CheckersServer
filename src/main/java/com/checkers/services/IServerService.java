@@ -12,6 +12,9 @@ import java.util.Set;
 public interface IServerService {
     boolean serverStarted();
     void startServer();
+
+    void stopServer();
+
     List<Game> getGames();
     int getGamesAmount();
 

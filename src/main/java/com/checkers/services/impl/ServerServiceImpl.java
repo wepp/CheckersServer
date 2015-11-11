@@ -34,6 +34,11 @@ public class ServerServiceImpl implements IServerService{
     }
 
     @Override
+    public void stopServer() {
+        server.stop();
+    }
+
+    @Override
     public List<Game> getGames() {
         List<Game> games = Lists.newArrayList();
         for(Map.Entry<Integer, GameThread> integerGameThreadEntry: server.getGames().entrySet()){

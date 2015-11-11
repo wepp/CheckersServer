@@ -29,6 +29,11 @@ public class ServerController {
         return "main/server";
     }
 
+    @RequestMapping(value = {"/stop"})
+    public void stop() {
+        serverService.stopServer();
+    }
+
     @RequestMapping(value = "/amount", method = RequestMethod.GET)
     public
     @ResponseBody

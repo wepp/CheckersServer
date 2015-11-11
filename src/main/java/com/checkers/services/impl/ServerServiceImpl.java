@@ -57,6 +57,8 @@ public class ServerServiceImpl implements IServerService{
     public Game getGame(String gameId, String fieldNum) {
         final Integer id = Integer.valueOf(gameId);
         final Integer fieldNumInt = Integer.valueOf(fieldNum);
+        if(!server.getGames().containsKey(id))
+            return new Game();
         GameThread game = server.getGames().get(id);
         if(game.getGameStoryStrings().size() > fieldNumInt) {
             return new Game(id,

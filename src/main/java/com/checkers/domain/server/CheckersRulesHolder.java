@@ -135,7 +135,7 @@ public class CheckersRulesHolder {
     }
 
     private boolean positionForQueen(Position position) {
-        return position.getY() == MAX_SIZE - 1;
+        return position.getY() == MAX_SIZE;
     }
 
     private boolean canStep(Field currentField, Check check, Position position) {

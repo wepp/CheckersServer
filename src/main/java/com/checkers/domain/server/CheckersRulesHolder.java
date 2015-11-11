@@ -38,7 +38,7 @@ public class CheckersRulesHolder {
         Set<Check> checks = Sets.newHashSet();
         for (int j = 0; j < 8; j++) {
             for (int i = 0; i < 8; i++) {
-                if ((i % 2 + j % 2) % 2 == 0) {
+                if ((i % 2 + j % 2) % 2 == 1) {
                     Position pos = new Position(i, j);
                     Check check = new Check(pos, j < 3 ? 0 : 1);
                     if (j < 3 || j > 4)

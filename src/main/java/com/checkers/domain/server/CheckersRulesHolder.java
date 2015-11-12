@@ -96,7 +96,7 @@ public class CheckersRulesHolder {
     private boolean checkNeedToHeat(Field currentField, Check ourCheck, Position stepTo) {
         if(isSimpleStep(ourCheck.getPosition(), stepTo)){
           for (Check check : currentField.getAllChecks()){
-              if(check.getColor() == ourCheck.getColor())
+              if(check.getColor() != ourCheck.getColor())
                   continue;
               for(Position position : possibleHeatPositions(check.getPosition())){
                   if(canBeat(currentField, check, position))
@@ -186,8 +186,7 @@ public class CheckersRulesHolder {
         Position enemyPosition = countEnemyPosition(check.getPosition(), position);
         Check enemy = getCheckByPosition(currentField, enemyPosition);
 
-        result &= enemy != null;
-        result &= areEnemies(check, enemy);
+        result &= enemy != null ? areEnemies(check, enemy) : false;
         return result;
     }
 

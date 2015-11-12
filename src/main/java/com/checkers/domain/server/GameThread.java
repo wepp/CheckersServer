@@ -23,6 +23,8 @@ public class GameThread implements Runnable {
     private boolean finished;
     private Queue<Field> gameStory;
     private List<Field> gameStoryStrings;
+    private int chekersCount = -1;
+    private int withoutHeat=0;
 
     public GameThread(Player white, Player black) {
         this.white = white;
@@ -42,7 +44,13 @@ public class GameThread implements Runnable {
             hisTurn = white;
             ObjectMapper objectMapper = new ObjectMapper();
             saveStep(checkersRulesHolder.getField());
-            while (!this.finished) {
+            while (!this.finished && withoutHeat<15) {
+                if(chekersCount == checkersRulesHolder.getField().getAllChecks().size()) {
+                    withoutHeat++;
+                }else{
+                    chekersCount = checkersRulesHolder.getField().getAllChecks().size();
+                    withoutHeat=0;
+                }
                 hisTurn.writeObject(objectMapper.writeValueAsString(checkersRulesHolder.getField()));
                 Step whiteStep = objectMapper.readValue((String)hisTurn.readObject(), Step.class);
                 if(/*isValidTime(whiteStep.getUsedTime())

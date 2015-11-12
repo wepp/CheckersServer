@@ -6,8 +6,10 @@ import com.checkers.domain.vo.Position;
 import com.checkers.domain.vo.Step;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -77,10 +79,41 @@ public class CheckersRulesHolder {
     private boolean calculateNextField(Field currentField, Step nextStep) {
         boolean result = true;
         Check ourCheck = nextStep.getCheck();
-        for (Position position : nextStep.getPositionAfterMove()) {
-            result &= calculateNextField(currentField, ourCheck, position);
+        if(nextStep.getPositionAfterMove().isEmpty()
+                || checkNeedToHeat(currentField, ourCheck, nextStep.getPositionAfterMove().get(0)))
+            return false;
+        if(nextStep.getPositionAfterMove().size() > 1){
+            for (Position position : nextStep.getPositionAfterMove()) {
+                result &= isHeatStep(ourCheck.getPosition(), position);
+                result &= calculateNextField(currentField, ourCheck, position);
+            }
+        }else {
+            result &= calculateNextField(currentField, ourCheck, nextStep.getPositionAfterMove().get(0));
         }
         return result;
+    }
+
+    private boolean checkNeedToHeat(Field currentField, Check ourCheck, Position stepTo) {
+        if(isSimpleStep(ourCheck.getPosition(), stepTo)){
+          for (Check check : currentField.getAllChecks()){
+              if(check.getColor() == ourCheck.getColor())
+                  continue;
+              for(Position position : possibleHeatPositions(check.getPosition())){
+                  if(canBeat(currentField, check, position))
+                      return true;
+              }
+          }
+        }
+        return false;
+    }
+
+    private List<Position> possibleHeatPositions(Position position) {
+        List<Position> positions = Lists.newArrayList();
+        positions.add(new Position(position.getX() + 2, position.getY() + 2));
+        positions.add(new Position(position.getX() + 2, position.getY() - 2));
+        positions.add(new Position(position.getX() - 2, position.getY() + 2));
+        positions.add(new Position(position.getX() - 2, position.getY() - 2));
+        return positions;
     }
 
     private boolean calculateNextField(Field currentField, Check check, Position position) {
@@ -145,6 +178,7 @@ public class CheckersRulesHolder {
 
     private boolean canBeat(Field currentField, Check check, Position position) {
         boolean result = true;
+        result &= isPositionValid(position);//position is in borders
         result &= isHeatStep(check.getPosition(), position);
         result &= (isQueenStep(check.getPosition(), position) && check.isQueen())
                 || isSimpleCheckStep(check.getPosition(), position);

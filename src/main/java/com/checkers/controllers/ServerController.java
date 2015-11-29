@@ -30,8 +30,9 @@ public class ServerController {
     }
 
     @RequestMapping(value = {"/stop"})
-    public void stop() {
+    public String stop() {
         serverService.stopServer();
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/amount", method = RequestMethod.GET)

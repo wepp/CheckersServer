@@ -33,16 +33,14 @@ public class Server {
     }
 
     public void registerServer() {
-        try {
-            recieverSocket = new ServerSocket(8282);
-            games = Maps.newConcurrentMap();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void startServer() {
         try {
+            if (recieverSocket == null) {
+                recieverSocket = new ServerSocket(8282);
+                games = Maps.newConcurrentMap();
+            }
             while (true) {
                 createNewBoard();
             }

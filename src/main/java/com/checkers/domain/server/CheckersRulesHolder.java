@@ -178,6 +178,7 @@ public class CheckersRulesHolder {
 
     private boolean canBeat(Field currentField, Check check, Position position) {
         boolean result = true;
+        result &= isPositionValid(currentField, position);// there is no other checks on positio
         result &= isPositionValid(position);//position is in borders
         result &= isHeatStep(check.getPosition(), position);
         result &= (isQueenStep(check.getPosition(), position) && check.isQueen())

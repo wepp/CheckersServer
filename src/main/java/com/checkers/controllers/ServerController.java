@@ -2,6 +2,7 @@ package com.checkers.controllers;
 
 import com.checkers.domain.vo.Game;
 import com.checkers.services.IServerService;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,8 @@ public class ServerController {
     public String desktop(Model model) {
         if(!serverService.serverStarted())
             serverService.startServer();
-        model.addAttribute("gamesAmount", serverService.getGamesAmount());
+        if(serverService.serverStarted())
+            model.addAttribute("gamesAmount", serverService.getGamesAmount());
         return "main/server";
     }
 
@@ -39,14 +41,18 @@ public class ServerController {
     public
     @ResponseBody
     int amount() {
-        return serverService.getGamesAmount();
+        if(serverService.serverStarted())
+            return serverService.getGamesAmount();
+        return 0;
     }
 
     @RequestMapping(value = "/games", method = RequestMethod.GET)
     public
     @ResponseBody
     List<Game> games() {
-        return serverService.getGames();
+        if(serverService.serverStarted())
+            return serverService.getGames();
+        return Lists.newArrayList();
     }
 
     @RequestMapping(value = "/{gameId}/field/{fieldNum}", method = RequestMethod.GET)

@@ -18,7 +18,7 @@
   <script>
     var id = ${gameId};
     var currentStep = 0;
-    var timeToVait = 5000;
+    var timeToVait = 1000;
     $(document).ready(
             function(){
               getGame();
@@ -92,7 +92,7 @@
           return '<img src="'+imageUrl(check.color, check.queen)+'" width="50" height="50">';
         }
       }
-      return '<img src="'+imageUrl(50, false)+'" width="50" height="50">';
+      return '<img src="'+imageUrl(50 + ((x + y) % 2), false)+'" width="50" height="50">';
     };
 
     imageUrl = function(x, y){

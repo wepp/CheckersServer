@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Created by Eugene on 08.11.2015.
  */
-public class Game {
+public class Game implements Comparable<Game>{
     private int gameId;
     private String whiteName;
     private String blackName;
@@ -79,5 +79,10 @@ public class Game {
 
     public void setField(Set<Check> field) {
         this.field = field;
+    }
+
+    @Override
+    public int compareTo(Game that) {
+        return this.gameId - that.gameId;
     }
 }

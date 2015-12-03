@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,7 @@ public class ServerServiceImpl implements IServerService{
                             integerGameThreadEntry.getValue().getWinner().getWhiteName()
                             : null));
         }
+        Collections.sort(games);
         return games;
     }
 

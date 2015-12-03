@@ -172,7 +172,7 @@ public class CheckersRulesHolder {
     }
 
     private boolean canStep(Field currentField, Check check, Position position) {
-        return isSimpleStep(check.getPosition(), position)
+        return isSimpleStep(check, position)
                 || canBeat(currentField, check, position);
     }
 
@@ -191,9 +191,12 @@ public class CheckersRulesHolder {
         return result;
     }
 
-    private boolean isSimpleStep(Position position, Position positionNew) {
+    private boolean isSimpleStep(Check check, Position positionNew) {
+        Position position = check.getPosition();
         return Math.abs(position.getY() - positionNew.getY()) == Math.abs(position.getX() - positionNew.getX())
-                && Math.abs(position.getY() - positionNew.getY()) == 1;
+                && Math.abs(position.getY() - positionNew.getY()) == 1
+                && ((isQueenStep(check.getPosition(), position) && check.isQueen())
+                || isSimpleCheckStep(check.getPosition(), position));
     }
 
     private boolean isHeatStep(Position position, Position positionNew) {

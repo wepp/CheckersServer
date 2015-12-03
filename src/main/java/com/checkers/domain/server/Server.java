@@ -48,9 +48,9 @@ public class Server {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            stop();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }finally {
             stop();
         }
     }

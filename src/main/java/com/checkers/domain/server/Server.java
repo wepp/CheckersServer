@@ -23,12 +23,13 @@ public class Server {
     private Map<Integer, GameThread> games;
     private ArrayList<Socket> sockets = new ArrayList<Socket>();
     private volatile int gameId = 0;
+    private volatile boolean started;
 
     Server() {
     }
 
     public boolean active() {
-        return recieverSocket != null && games != null && !games.isEmpty();
+        return recieverSocket != null && games != null && !games.isEmpty() && started;
     }
 
     public void registerServer() {
@@ -40,7 +41,8 @@ public class Server {
                 stop();
                 recieverSocket = new ServerSocket(8282);
                 games = Maps.newConcurrentMap();
-                while (true) {
+                started = true;
+                while (started) {
                     createNewBoard();
                 }
             }
@@ -92,6 +94,7 @@ public class Server {
 
     public void stop() {
         try {
+            started = false;
             for (Socket s : sockets)
             if(s != null)
                 s.close();

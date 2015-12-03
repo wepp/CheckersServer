@@ -97,7 +97,10 @@
 
     imageUrl = function(x, y){
       if(x === 50){
-        return "https://literaryundertakings.files.wordpress.com/2014/10/olympia_blue.jpg";
+        return "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Red_flag.svg/2000px-Red_flag.svg.png";
+      }
+      if(x === 51){
+        return "http://www.solidbackgrounds.com/images/1920x1080/1920x1080-white-solid-color-background.jpg";
       }
       if(x === 0 && y === false){
         return "http://megocomp.ru/wp-content/uploads/2014/03/vQBzi.png";

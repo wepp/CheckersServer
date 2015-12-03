@@ -40,9 +40,9 @@ public class Server {
                 stop();
                 recieverSocket = new ServerSocket(8282);
                 games = Maps.newConcurrentMap();
-            }
-            while (true) {
-                createNewBoard();
+                while (true) {
+                    createNewBoard();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,7 +85,9 @@ public class Server {
     }
 
     public int getGamesAmount() {
-        return games.size();
+        if(active())
+            return games.size();
+        return 0;
     }
 
     public void stop() {

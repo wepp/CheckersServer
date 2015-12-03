@@ -94,7 +94,7 @@ public class CheckersRulesHolder {
     }
 
     private boolean checkNeedToHeat(Field currentField, Check ourCheck, Position stepTo) {
-        if(isSimpleStep(ourCheck.getPosition(), stepTo)){
+        if(isSimpleStep(ourCheck, stepTo)){
           for (Check check : currentField.getAllChecks()){
               if(check.getColor() != ourCheck.getColor())
                   continue;
@@ -144,7 +144,7 @@ public class CheckersRulesHolder {
     }
 
     private void step(Field currentField, Check check, Position position) {
-        if (isSimpleStep(check.getPosition(), position)) {
+        if (isSimpleStep(check, position)) {
             makeSimpleStep(currentField, check, position);
         } else {
             makeHeatStep(currentField, check, position);

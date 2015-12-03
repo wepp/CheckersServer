@@ -91,18 +91,14 @@ public class Server {
     public void stop() {
         try {
             for (Socket s : sockets)
+            if(s != null)
                 s.close();
-            sockets.clear();
-            recieverSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            sockets.clear();
-            try {
+            if(sockets != null)
+                sockets.clear();
+            if(recieverSocket != null)
                 recieverSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         recieverSocket = null;
     }

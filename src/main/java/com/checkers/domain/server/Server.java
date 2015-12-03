@@ -5,7 +5,6 @@ import com.checkers.domain.vo.Player;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -29,7 +28,7 @@ public class Server {
     }
 
     public boolean active() {
-        return recieverSocket != null;
+        return recieverSocket != null && games != null && !games.isEmpty();
     }
 
     public void registerServer() {
@@ -37,7 +36,8 @@ public class Server {
 
     public void startServer() {
         try {
-            if (recieverSocket == null) {
+            if (!active()) {
+                stop();
                 recieverSocket = new ServerSocket(8282);
                 games = Maps.newConcurrentMap();
             }
@@ -48,6 +48,8 @@ public class Server {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            stop();
         }
     }
 
@@ -94,6 +96,13 @@ public class Server {
             recieverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            sockets.clear();
+            try {
+                recieverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         recieverSocket = null;
     }

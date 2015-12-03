@@ -195,8 +195,8 @@ public class CheckersRulesHolder {
         Position position = check.getPosition();
         return Math.abs(position.getY() - positionNew.getY()) == Math.abs(position.getX() - positionNew.getX())
                 && Math.abs(position.getY() - positionNew.getY()) == 1
-                && ((isQueenStep(check.getPosition(), position) && check.isQueen())
-                || isSimpleCheckStep(check.getPosition(), position));
+                && ((isQueenStep(position, positionNew) && check.isQueen())
+                || isSimpleCheckStep(position, positionNew));
     }
 
     private boolean isHeatStep(Position position, Position positionNew) {

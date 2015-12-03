@@ -43,13 +43,14 @@ public class ServerServiceImpl implements IServerService{
     public List<Game> getGames() {
         List<Game> games = Lists.newArrayList();
         for(Map.Entry<Integer, GameThread> integerGameThreadEntry: server.getGames().entrySet()){
+            String winner = integerGameThreadEntry.getValue().noOne() ? "No one ": integerGameThreadEntry.getValue().gameFinished() ?
+                    integerGameThreadEntry.getValue().getWinner().getWhiteName()
+                    :null;
             games.add(new Game(integerGameThreadEntry.getKey(),
                     integerGameThreadEntry.getValue().getWhite().getWhiteName(),
                     integerGameThreadEntry.getValue().getBlack().getWhiteName(),
                     integerGameThreadEntry.getValue().gameFinished(),
-                    integerGameThreadEntry.getValue().gameFinished() ?
-                            integerGameThreadEntry.getValue().getWinner().getWhiteName()
-                            : null));
+                    winner));
         }
         Collections.sort(games);
         return games;
@@ -67,23 +68,22 @@ public class ServerServiceImpl implements IServerService{
         if(!server.getGames().containsKey(id))
             return new Game();
         GameThread game = server.getGames().get(id);
+        String winner = game.noOne() ? "No one ": game.gameFinished() ?
+                game.getWinner().getWhiteName()
+                :null;
         if(game.getGameStoryStrings().size() > fieldNumInt) {
             return new Game(id,
                     game.getWhite().getWhiteName(),
                     game.getBlack().getWhiteName(),
                     game.gameFinished(),
-                    game.gameFinished() ?
-                            game.getWinner().getWhiteName()
-                            :null,
+                    winner,
                     game.getGameStoryStrings().get(fieldNumInt).getAllChecks());
         } else {
             return new Game(id,
                     game.getWhite().getWhiteName(),
                     game.getBlack().getWhiteName(),
                     game.gameFinished(),
-                    game.gameFinished() ?
-                            game.getWinner().getWhiteName()
-                            :null,
+                    winner,
                     null);
         }
     }

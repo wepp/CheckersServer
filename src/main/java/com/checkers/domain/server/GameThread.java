@@ -157,4 +157,8 @@ public class GameThread implements Runnable {
         sb.append('}');
         return sb.toString();
     }
+
+    public boolean noOne() {
+        return withoutHeat >= 15;
+    }
 }

@@ -25,6 +25,7 @@ public class GameThread implements Runnable {
     private List<Field> gameStoryStrings;
     private int chekersCount = -1;
     private int withoutHeat=0;
+    private static final int MAX_HEAT_STEPS = 75;
 
     public GameThread(Player white, Player black) {
         this.white = white;
@@ -44,7 +45,7 @@ public class GameThread implements Runnable {
             hisTurn = white;
             ObjectMapper objectMapper = new ObjectMapper();
             saveStep(checkersRulesHolder.getField());
-            while (!this.finished && withoutHeat<15) {
+            while (!this.finished && withoutHeat < MAX_HEAT_STEPS) {
                 if(chekersCount == checkersRulesHolder.getField().getAllChecks().size()) {
                     withoutHeat++;
                 }else{
@@ -159,6 +160,6 @@ public class GameThread implements Runnable {
     }
 
     public boolean noOne() {
-        return withoutHeat >= 15;
+        return withoutHeat >= MAX_HEAT_STEPS;
     }
 }
